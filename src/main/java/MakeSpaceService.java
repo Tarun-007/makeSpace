@@ -7,6 +7,8 @@ class MakeSpaceService {
     static final int CAVE_CAPACITY = 3;
     static final int TOWER_CAPACITY = 7;
     static final int MANSION_CAPACITY = 20;
+    static final int MIN_CAPACITY = 2;
+    static final int MAX_CAPACITY= 20;
 
     static Room cave = new Room(CAVE_CAPACITY, "C-Cave");
     static Room tower = new Room(TOWER_CAPACITY, "D-Tower");
@@ -16,7 +18,7 @@ class MakeSpaceService {
     public String bookRoom(Integer count, LocalTime startTime, LocalTime endTime) {
         String output = "NO_VACANT_ROOM";
         
-        if (count >= 2 && count <= 20) {
+        if (count >= MIN_CAPACITY && count <= MAX_CAPACITY) {
             List<Room> eligibleRooms = getEligibleRooms(count);
             return getBookedRoom(startTime, endTime, eligibleRooms);
         }

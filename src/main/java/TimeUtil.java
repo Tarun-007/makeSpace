@@ -16,21 +16,25 @@ public class TimeUtil {
         if(p.matcher(t1).matches() && p.matcher(t2).matches()  ){
             LocalTime startTime = getTime(t1);
             LocalTime endTime = getTime(t2);
-            if(startTime.getMinute()%15 == 0 && endTime.getMinute()%15 == 0 && startTime.isBefore(endTime) ){
-                return true;
-            }else{
-                return false;
-            }
+            return is15minuteInterval(startTime, endTime);
         }
         return false;
+    }
+
+    private static boolean is15minuteInterval(LocalTime startTime, LocalTime endTime) {
+        if(startTime.getMinute() % 15 == 0 && endTime.getMinute() % 15 == 0 && startTime.isBefore(endTime) ){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     static LocalTime getTime(String time){
         return LocalTime.parse(time);
     }
     
-    public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> unavailableTimeSlots){
-        return !startTimeOverlap(startTime,unavailableTimeSlots) && !endTimeOverlap(startTime,endTime,unavailableTimeSlots);
+    public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> bookedSlots){
+        return !startTimeOverlap(startTime,bookedSlots) && !endTimeOverlap(startTime,endTime,bookedSlots);
     }
 
     private static boolean startTimeOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) { 
