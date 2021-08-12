@@ -30,26 +30,26 @@ public class TimeUtil {
     }
     
     public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> unavailableTimeSlots){
-        return firstOverlap(startTime,unavailableTimeSlots) && secondOverlap(startTime,endTime,unavailableTimeSlots);
+        return !startTimeOverlap(startTime,unavailableTimeSlots) && !endTimeOverlap(startTime,endTime,unavailableTimeSlots);
     }
 
-    private static boolean firstOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) { 
+    private static boolean startTimeOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) { 
         for(List<LocalTime> interval : timeIntervals){
             if((startTime.equals(interval.get(0)) || startTime.isAfter(interval.get(0))) &&
                     startTime.isBefore(interval.get(1)) ){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    private static boolean secondOverlap(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> timeIntervals) {
+    private static boolean endTimeOverlap(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> timeIntervals) {
         for(List<LocalTime> interval : timeIntervals){
             if((interval.get(0).isAfter(startTime) || interval.get(0).equals(startTime) ) && interval.get(0).isBefore(endTime)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public  static void initialiseBufferTimes(List<List<String>>  bufferTimeStrings){

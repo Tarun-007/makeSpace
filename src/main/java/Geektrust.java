@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -20,12 +19,11 @@ public class Geektrust {
         
         TimeUtil.initialiseBufferTimes(bufferTimeList);
         
-        MakeSpaceUtility makeSpace = new MakeSpaceUtility();
+        MakeSpaceService makeSpace = new MakeSpaceService();
 
         while (sc.hasNextLine()) {
             String[] input = sc.nextLine().split(" ");
             String output = "";
-            
             LocalTime startTime = LocalTime.parse(input[1]);
             LocalTime endTime = LocalTime.parse(input[2]);
             
@@ -35,7 +33,8 @@ public class Geektrust {
                 output =  "NO_VACANT_ROOM";
             }
             else if (input[0].equals("BOOK")) {
-                output = makeSpace.bookRoom(input, startTime, endTime);
+                int count = Integer.parseInt(input[3].trim());
+                output = makeSpace.bookRoom(count, startTime, endTime);
             }else if (input[0].equals("VACANCY")) {
                 output = makeSpace.checkAvailability(startTime, endTime);
             }
