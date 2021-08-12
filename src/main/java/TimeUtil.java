@@ -2,13 +2,14 @@
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class TimeUtil {
     
     static Pattern p = Pattern.compile("^([0-1][0-9]|2[0-3]):[0-5][0-9]$");
-    static List<Pair<LocalTime,LocalTime>> bufferTimes = new ArrayList<>();
+    static List<List<LocalTime>> bufferTimes = new ArrayList<>();
     
     
     public static boolean validateInput(String t1, String t2){
@@ -28,23 +29,23 @@ public class TimeUtil {
         return LocalTime.parse(time);
     }
     
-    public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<Pair<LocalTime,LocalTime>> unavailableTimeSlots){
+    public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> unavailableTimeSlots){
         return firstOverlap(startTime,unavailableTimeSlots) && secondOverlap(startTime,endTime,unavailableTimeSlots);
     }
 
-    private static boolean firstOverlap(LocalTime startTime, List<Pair<LocalTime, LocalTime>> timeIntervals) { 
-        for(Pair<LocalTime,LocalTime> interval : timeIntervals){
-            if((startTime.equals(interval.getFirst()) || startTime.isAfter(interval.getFirst())) &&
-                    startTime.isBefore(interval.getSecond()) ){
+    private static boolean firstOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) { 
+        for(List<LocalTime> interval : timeIntervals){
+            if((startTime.equals(interval.get(0)) || startTime.isAfter(interval.get(0))) &&
+                    startTime.isBefore(interval.get(1)) ){
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean secondOverlap(LocalTime startTime, LocalTime endTime, List<Pair<LocalTime, LocalTime>> timeIntervals) {
-        for(Pair<LocalTime,LocalTime> interval : timeIntervals){
-            if((interval.getFirst().isAfter(startTime) || interval.getFirst().equals(startTime) ) && interval.getFirst().isBefore(endTime)){
+    private static boolean secondOverlap(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> timeIntervals) {
+        for(List<LocalTime> interval : timeIntervals){
+            if((interval.get(0).isAfter(startTime) || interval.get(0).equals(startTime) ) && interval.get(0).isBefore(endTime)){
                 return false;
             }
         }
@@ -55,7 +56,7 @@ public class TimeUtil {
         for(List<String> timeInterval : bufferTimeStrings){
             LocalTime t1 = getTime(timeInterval.get(0));
             LocalTime t2 = getTime(timeInterval.get(1));
-            bufferTimes.add(new Pair(t1,t2));
+            bufferTimes.add(Arrays.asList(t1,t2));
         }
         
     }

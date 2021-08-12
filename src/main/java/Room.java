@@ -3,6 +3,7 @@ import lombok.Data;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class Room {
     private Integer capacity;
     private String name;
-    private List<Pair<LocalTime,LocalTime>> bookedTimeSlots;
+    private List<List<LocalTime>> bookedTimeSlots;
     Room(int capacity, String name){
         this.capacity = capacity;
         this.name = name;
@@ -22,7 +23,7 @@ public class Room {
     }
     
     public void bookSlot(LocalTime startTime, LocalTime endtTime){
-        this.bookedTimeSlots.add(new Pair(startTime,endtTime));
+        this.bookedTimeSlots.add(Arrays.asList(startTime, endtTime));
     }
     
     
