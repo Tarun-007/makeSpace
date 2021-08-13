@@ -31,7 +31,7 @@ class MakeSpaceService {
         List<Room> eligibleRooms = new ArrayList<>();
         if (count <= CAVE_CAPACITY) {
             eligibleRooms.addAll(Arrays.asList(cave, tower, mansion));
-        } else if (count > CAVE_CAPACITY && count <= TOWER_CAPACITY) {
+        } else if (count <= TOWER_CAPACITY) {
             eligibleRooms.addAll(Arrays.asList(tower, mansion));
         } else {
             eligibleRooms.add(mansion);
@@ -48,10 +48,8 @@ class MakeSpaceService {
                 output += room.getName();
                 output += " ";
             }
-
-
         }
-        if (output.isEmpty()) {
+        if (output.isEmpty() || TimeUtil.isBufferTime(startTime, endTime)) {
             output = "NO_VACANT_ROOM";
         }
         return output.trim();

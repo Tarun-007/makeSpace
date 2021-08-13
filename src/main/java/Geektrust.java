@@ -19,44 +19,27 @@ public class Geektrust {
         
         TimeUtil.initialiseBufferTimes(bufferTimeList);
         
-        
-
         while (sc.hasNextLine()) {
             String[] input = sc.nextLine().split(" ");
             String output = "";
             LocalTime startTime = LocalTime.parse(input[1]);
             LocalTime endTime = LocalTime.parse(input[2]);
+            String action = input[0];
             Integer count = input.length == 4? Integer.parseInt(input[3]) :null;
-//            output = processInput(input, startTime, endTime, count);
+            
             if (!TimeUtil.isValidInput(startTime, endTime)) {
                 output = "INCORRECT_INPUT";
-                continue;
-            }else if(TimeUtil.isBufferTime(startTime, endTime)){
-                output =  "NO_VACANT_ROOM";
-                continue;
+            }else {
+                output = Geektrust.evaluateInput(action, count, startTime, endTime);
             }
-            
-            output = evaluateInput(input[0], count, startTime, endTime);
             System.out.println(output);
             
         }
         
     }
+    
 
-    private static String processInput(String[] input, LocalTime startTime, LocalTime endTime, Integer count) {
-        String output;
-        if (!TimeUtil.isValidInput(startTime, endTime)) {
-            output = "INCORRECT_INPUT";
-        }else if(TimeUtil.isBufferTime(startTime, endTime)){
-            output =  "NO_VACANT_ROOM";
-        }
-        else {
-            output = evaluateInput(input[0], count, startTime, endTime);
-        }
-        return output;
-    }
-
-    static String evaluateInput(String action, Integer count, LocalTime startTime, LocalTime endTime){
+     static String evaluateInput(String action, Integer count, LocalTime startTime, LocalTime endTime){
          MakeSpaceService makeSpaceService = new MakeSpaceService();
          if (action.equals("BOOK")) {
             return makeSpaceService.bookRoom(count, startTime, endTime);
