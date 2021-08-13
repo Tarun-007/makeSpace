@@ -19,30 +19,50 @@ public class Geektrust {
         
         TimeUtil.initialiseBufferTimes(bufferTimeList);
         
-        MakeSpaceService makeSpace = new MakeSpaceService();
+        
 
         while (sc.hasNextLine()) {
             String[] input = sc.nextLine().split(" ");
             String output = "";
             LocalTime startTime = LocalTime.parse(input[1]);
             LocalTime endTime = LocalTime.parse(input[2]);
-            
-            if (!TimeUtil.validateInput(input[1], input[2])) {
+            Integer count = input.length == 4? Integer.parseInt(input[3]) :null;
+//            output = processInput(input, startTime, endTime, count);
+            if (!TimeUtil.isValidInput(startTime, endTime)) {
                 output = "INCORRECT_INPUT";
-            }else if(TimeUtil.isBufferTime(startTime,endTime)){
+                continue;
+            }else if(TimeUtil.isBufferTime(startTime, endTime)){
                 output =  "NO_VACANT_ROOM";
-            }
-            else if (input[0].equals("BOOK")) {
-                int count = Integer.parseInt(input[3].trim());
-                output = makeSpace.bookRoom(count, startTime, endTime);
-            }else if (input[0].equals("VACANCY")) {
-                output = makeSpace.checkAvailability(startTime, endTime);
+                continue;
             }
             
+            output = evaluateInput(input[0], count, startTime, endTime);
             System.out.println(output);
             
         }
         
+    }
+
+    private static String processInput(String[] input, LocalTime startTime, LocalTime endTime, Integer count) {
+        String output;
+        if (!TimeUtil.isValidInput(startTime, endTime)) {
+            output = "INCORRECT_INPUT";
+        }else if(TimeUtil.isBufferTime(startTime, endTime)){
+            output =  "NO_VACANT_ROOM";
+        }
+        else {
+            output = evaluateInput(input[0], count, startTime, endTime);
+        }
+        return output;
+    }
+
+    static String evaluateInput(String action, Integer count, LocalTime startTime, LocalTime endTime){
+         MakeSpaceService makeSpaceService = new MakeSpaceService();
+         if (action.equals("BOOK")) {
+            return makeSpaceService.bookRoom(count, startTime, endTime);
+        }else{
+            return  makeSpaceService.checkAvailability(startTime, endTime);
+        }
     }
     
     
