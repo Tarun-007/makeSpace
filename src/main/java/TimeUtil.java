@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TimeUtil {
 
@@ -22,10 +21,10 @@ public class TimeUtil {
     static LocalTime getTime(String time) { return LocalTime.parse(time); }
 
     public static boolean isSlotAvailable(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> bookedSlots) {
-        return !startTimeOverlap(startTime, bookedSlots) && !endTimeOverlap(startTime, endTime, bookedSlots);
+        return !isStartTimeOverlap(startTime, bookedSlots) && !isEndTimeOverlap(startTime, endTime, bookedSlots);
     }
 
-    private static boolean startTimeOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) {
+    private static boolean isStartTimeOverlap(LocalTime startTime, List<List<LocalTime>> timeIntervals) {
         for (List<LocalTime> interval : timeIntervals) {
             if ((startTime.equals(interval.get(0)) || startTime.isAfter(interval.get(0))) &&
                     startTime.isBefore(interval.get(1))) {
@@ -35,7 +34,7 @@ public class TimeUtil {
         return false;
     }
 
-    private static boolean endTimeOverlap(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> timeIntervals) {
+    private static boolean isEndTimeOverlap(LocalTime startTime, LocalTime endTime, List<List<LocalTime>> timeIntervals) {
         for (List<LocalTime> interval : timeIntervals) {
             if ((interval.get(0).isAfter(startTime) || interval.get(0).equals(startTime)) && interval.get(0).isBefore(endTime)) {
                 return true;
